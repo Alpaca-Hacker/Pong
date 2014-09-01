@@ -36,7 +36,8 @@ namespace Pong
             {
                 var rnd = new Random();
                 float y = (rnd.Next(100)/10f )-10f;
-                velocity.X = +5f;
+                float X = (rnd.Next(2,8));
+                velocity.X = X;
                 velocity.Y = y;
                 attachedToPaddle = null;
             }
@@ -51,7 +52,23 @@ namespace Pong
                 if (BoundingBox.Intersects(gameObjects.PlayerPaddle.BoundingBox) || 
                     BoundingBox.Intersects(gameObjects.ComputerPaddle.BoundingBox))
                 {
-                    velocity.X = -velocity.X;
+                    var rnd = new Random();
+                    float x = (rnd.Next(20) / 10f);
+                    float y = (rnd.Next(40) / 10f)-2.0f;
+
+                    if (velocity.X < 0)
+                    {
+                        Location.X = gameObjects.PlayerPaddle.Width;
+                        x = -x;
+
+                    }
+                    else
+                    {
+                        Location.X = ((screenBounds.Width - gameObjects.ComputerPaddle.Width)-Width);
+                    }
+
+                    velocity.X = -(velocity.X+x);
+                    velocity.Y += y;
                 }
             }
             delta = velocity;

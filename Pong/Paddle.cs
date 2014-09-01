@@ -14,7 +14,8 @@ namespace Pong
         public enum PlayerType
         {
             Human,
-            Computer
+            Computer,
+            Cheat
         }
 
         private PlayerType playerType;
@@ -30,13 +31,16 @@ namespace Pong
         {
             if (playerType == PlayerType.Computer)
             {
+                var random = new Random();
+                var reactions = random.Next(20, 40);
+
                 Ball ball = gameObjects.Ball; 
-                if ((ball.Location.Y-ball.Height) < Location.Y)
+                if ((ball.Location.Y-ball.Height) < Location.Y-reactions)
                 {
                     delta = new Vector2(0, -4f);
                 }
 
-                if (ball.Location.Y > (Location.Y+this.Height-ball.Height))
+                if (ball.Location.Y > (Location.Y+this.Height-ball.Height)+reactions)
                 {
                     delta = new Vector2(0, 4f);
                 }
@@ -55,6 +59,12 @@ namespace Pong
                     delta = new Vector2(0, 5f);
                 }
             }
+
+            if (playerType == PlayerType.Cheat)
+            {
+                Location.Y = gameObjects.Ball.Location.Y;
+            }
+
 
             base.Update(gameTime, gameObjects);
         }

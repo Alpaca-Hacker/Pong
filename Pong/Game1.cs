@@ -14,7 +14,10 @@ namespace Pong
         private Paddle playerPaddle;
         private Paddle computerPaddle;
         private Ball ball;
+        private Score score;
         private GameObjects gameObjects;
+
+        private bool Cheat = false;
 
         public Game1()
             : base()
@@ -46,18 +49,20 @@ namespace Pong
             spriteBatch = new SpriteBatch(GraphicsDevice);
             var gameBoundies = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
             var playerTexture = (Content.Load<Texture2D>("PlayerPaddle"));
-            var computerTexture = playerTexture;
+            var computerTexture = (Content.Load<Texture2D>("ComputerPaddle"));
 
-            playerPaddle = new Paddle(playerTexture,Vector2.Zero, gameBoundies, Paddle.PlayerType.Human);
-            computerPaddle = new Paddle(computerTexture, new Vector2((gameBoundies.Width - computerTexture.Width),0), gameBoundies, Paddle.PlayerType.Computer);
+            playerPaddle = new Paddle(playerTexture,Vector2.Zero, gameBoundies, (Cheat? Paddle.PlayerType.Cheat:Paddle.PlayerType.Human));
+            computerPaddle = new Paddle(computerTexture, new Vector2((gameBoundies.Width - computerTexture.Width),0), gameBoundies, (Cheat? Paddle.PlayerType.Cheat:Paddle.PlayerType.Computer));
 
             ball = new Ball(Content.Load<Texture2D>("Ball"), Vector2.Zero, gameBoundies);
             ball.Attachto(playerPaddle);
+            score = new Score(Content.Load<SpriteFont>("SpriteFont1"), gameBoundies);
             gameObjects = new GameObjects
             {
                 PlayerPaddle = playerPaddle,
                 ComputerPaddle = computerPaddle,
-                Ball = ball
+                Ball = ball,
+                Score = score
             };
         }
 
@@ -86,6 +91,7 @@ namespace Pong
             playerPaddle.Update(gameTime, gameObjects);
             computerPaddle.Update(gameTime, gameObjects);
             ball.Update(gameTime, gameObjects);
+            score.Update(gameTime, gameObjects);
 
             base.Update(gameTime);
         }
@@ -101,7 +107,9 @@ namespace Pong
             spriteBatch.Begin();
             playerPaddle.Draw(spriteBatch);
             computerPaddle.Draw(spriteBatch);
+            score.Draw(spriteBatch);
             ball.Draw(spriteBatch);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
