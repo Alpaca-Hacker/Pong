@@ -69,6 +69,7 @@ namespace Pong
 
                     velocity.X = -(velocity.X+x);
                     velocity.Y += y;
+                    gameObjects.Sounds.Play(Sound.Hit);
                 }
             }
             delta = velocity;

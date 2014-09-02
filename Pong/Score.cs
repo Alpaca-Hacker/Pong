@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Pong
 {
     public class Score
     {
+       
         private readonly SpriteFont font;
         private readonly Rectangle gameBoundies;
 
@@ -29,6 +31,10 @@ namespace Pong
             var location = new Vector2(xPosition, yPosition);
 
             spriteBatch.DrawString(font, scoreText, location, Color.Black);
+
+            
+
+
         }
 
         internal void Update(GameTime gameTime, GameObjects gameObjects)
@@ -39,13 +45,17 @@ namespace Pong
             {
                 ComputerScore++;
                 ball.Attachto(gameObjects.PlayerPaddle);
+                gameObjects.Sounds.Play(Sound.Score);
             }
 
             if ((ball.Location.X+ball.Width) > (gameBoundies.Width))
             {
                 PlayerScore++;
                 ball.Attachto(gameObjects.PlayerPaddle);
+                gameObjects.Sounds.Play(Sound.Score);
             }
+
+           
         }
     }
 }
